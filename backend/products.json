@@ -123,9 +123,9 @@
     "size": "3001C",
     "locations": [
       {
-        "aisle": "Not assigned",
-        "section": "Not assigned",
-        "shelf": "Not assigned"
+        "aisle": "1",
+        "section": "1",
+        "shelf": "1"
       }
     ]
   },
@@ -133,13 +133,7 @@
     "upc": "00016",
     "name": "BARTON 1792 RES BOURBON SMALL BATCH",
     "size": "750ML",
-    "locations": [
-      {
-        "aisle": "Not assigned",
-        "section": "Not assigned",
-        "shelf": "Not assigned"
-      }
-    ]
+    "locations": []
   },
   {
     "upc": "00018",

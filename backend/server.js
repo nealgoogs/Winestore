@@ -44,68 +44,61 @@ app.get('/api/products/search', (req, res) => {
 });
 
 app.post('/api/products/addLocations', (req, res) => {
-    const { upc, locations } = req.body;
-  
-    fs.readFile('products.json', (err, data) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Server error' });
-      }
-  
-      const products = JSON.parse(data);
-      const productIndex = products.findIndex(product => product.upc === upc);
-  
-      if (productIndex === -1) {
-        return res.status(404).json({ message: 'Product not found' });
-      }
-  
-      // Add the new locations to the product's locations array
-      products[productIndex].locations.push(...locations);
-  
-      fs.writeFile('products.json', JSON.stringify(products, null, 2), (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ message: 'Server error' });
-        }
-  
-        res.json({ message: 'Locations added' });
-      });
-    });
-  });
+  const { upc, locations } = req.body;
 
-  app.delete('/api/products/deleteLocation', (req, res) => {
-    const { upc, location } = req.body;
-  
-    const productIndex = products.findIndex(product => product.upc === upc);
-  
-    if (productIndex === -1) {
-      return res.status(404).json({ message: 'Product not found' });
+  const productIndex = products.findIndex(product => product.upc === upc);
+
+  if (productIndex === -1) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  // Add the new locations to the product's locations array
+  products[productIndex].locations.push(...locations);
+
+  fs.writeFile('products.json', JSON.stringify(products, null, 2), (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Server error' });
     }
-  
-    // Find the location in the product's locations array
-    const locationIndex = products[productIndex].locations.findIndex(loc =>
-      loc.aisle === location.aisle &&
-      loc.section === location.section &&
-      loc.shelf === location.shelf
-    );
-  
-    if (locationIndex === -1) {
-      return res.status(404).json({ message: 'Location not found' });
-    }
-  
-    // Remove the location
-    products[productIndex].locations.splice(locationIndex, 1);
-  
-    // Write the updated data back to the file
-    fs.writeFile('products.json', JSON.stringify(products, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Server error' });
-      }
-  
-      res.json({ message: 'Location deleted' });
-    });
+
+    res.json({ message: 'Locations added' });
   });
+});
+
+app.delete('/api/products/deleteLocation', (req, res) => {
+  const { upc, location } = req.body;
+
+  const productIndex = products.findIndex(product => product.upc === upc);
+
+  if (productIndex === -1) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  // Find the location in the product's locations array
+  const locationIndex = products[productIndex].locations.findIndex(loc =>
+    loc.aisle === location.aisle &&
+    loc.section === location.section &&
+    loc.shelf === location.shelf
+  );
+
+  if (locationIndex === -1) {
+    return res.status(404).json({ message: 'Location not found' });
+  }
+
+  // Remove the location
+  products[productIndex].locations.splice(locationIndex, 1);
+
+  // Write the updated data back to the file
+  fs.writeFile('products.json', JSON.stringify(products, null, 2), (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    res.json({ message: 'Location deleted' });
+  });
+});
+
   
 
   
